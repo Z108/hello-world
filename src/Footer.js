@@ -3,9 +3,10 @@ import React from 'react';
 class Footer extends React.Component{
 
   render(){
+    let {btn,str}=this.props
     return (
-      <div>
-         footer
+      <div onClick={()=>btn('two')}>
+         footer   {str}
       </div>
     )
 

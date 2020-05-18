@@ -6,7 +6,8 @@ class App extends React.Component{
   constructor(...args){
     super(...args)
     this.state={
-      num:1
+      num:1,
+      str:'one'
     }
   }
   fn=()=>{
@@ -14,15 +15,21 @@ class App extends React.Component{
       num:this.state.num+1
     })
   }
+  btn=(val)=>{
+    console.log(val)
+    this.setState({
+      str:val
+    })
+  }
 
   render(){
-    let {num}=this.state
+    let {num,str}=this.state
     return (
       <div>
         <Header tit='导航' num={num}/>
         <Header tit='头部' num={num}/>
         <Header />
-        <Footer/>
+        <Footer btn={this.btn} str={str}/>
         <button onClick={this.fn}>add</button>
       </div>
     )
