@@ -1,68 +1,31 @@
-import React from 'react';
+
 import './App.css';
-import Header from './Header'
-// import Footer from './Footer'
-class App extends React.Component{
-  constructor(...args){
-    super(...args)
-    this.state={
-      num:1,
-      str:'one'
-    }
+import React, { Component } from 'react'
+import Child from './component/Child'
+
+export default class App extends Component {
+  state={
+    name:'XXX'
   }
   fn=()=>{
-    // this.setState({
-    //   num:this.state.num+1
-    // })
-    // this.setState({
-    //   num:this.state.num+1
-    // })                         //异步代码
-
-    // this.setState(function(oldstate){
-    //   return {
-    //     num:oldstate.num++
-    //   }
-    // })
-    // this.setState(function(oldstate){
-    //   return {
-    //     num:oldstate.num++
-    //   } 
-    // })                        //同步代码
-    // console.log(this.state.num)
-   
-    setTimeout(() => {
-      this.setState({
-          num:this.state.num++
-        })                       //异步代码
-
-        // this.setState(function(oldstate){
-        //   return {
-        //     num:oldstate.num++
-        //   } 
-        // })            //同步代码
-    }, 0);
-   
+    console.log(111);
   }
-  btn=(val)=>{
-    console.log(val)
-    this.setState({
-      str:val
-    })
-  }
-  render(){
-    let {num,str}=this.state
+  render() {
     return (
       <div>
-        <Header tit='导航' num={num}/>
-        <Header tit='头部' num={num}/>
-        {/* <Header /> */}
-        {/* <Footer btn={this.btn} str={str}/> */}
-        <button onClick={this.fn}>add</button>
+        aaa
+        {/* <Child>
+          <p>A1</p>
+          <p>A2</p>
+          <p>{this.state.name}</p>
+          <button onClick={this.fn}>点击</button>
+        </Child> */}
+
+        <Child render={(x,y)=>{
+          return <img width={250} height={250}  src="/logo192.png" style={{position:'fixed',left:x,top:y}}/>
+        }} />
       </div>
     )
   }
-
-
 }
 
-export default App;
