@@ -1,0 +1,107 @@
+diff a/src/App.js b/src/App.js	(rejected hunks)
+@@ -1,52 +1,55 @@
+-import React,{useState,useEffect} from 'react';
+-import logo from './logo.svg';
+-import './App.css';
+-import GetData from './component/GetData'
+-
+-function App(props) {
+-  // let {a}=props
+-  // let [num,setnum]=useState(10)
+-  // let [datas,setdata]=useState([1,2,3,4,5])
+-  // //开始执行一次，类似componentDidMount
+-  // useEffect(()=>{
+-  //   setnum(++num)
+-  //   console.log(num);
+-  // },[]);
+-
+-  let {datas}=GetData('./data/json')
+-  console.log(GetData('./data/json'));
+-  console.log(datas);
+-  
+-  //死循环  类似updata
+-  // useEffect(()=>{
+-  //   setnum(++num)
+-  //   console.log(num);
+-  // },[num]);
+-
+- 
+ 
+-
+-
+-  // function btn(e){
+-  //   let value=e.target
+-  //   console.log(value);
+-  //   setnum(20)
+-  //   console.log(1);
+-
+-  // }
+-  // return (
+-  //   <div className="App">
+-  //       {num}
+-  //       {
+-  //         datas.map((v,i)=>{
+-  //           return (
+-  //           <div key={v}>{v}</div>    
+-  //           )
+-  //         })
+-  //       }
+-  //       <button onClick={(e)=>btn(e)}>click</button>
+-  //   </div>
+-  // );
++import './App.css';
++import React, { Component } from 'react'
++import {connect} from 'react-redux'
++// import {Route,Switch,Redirect} from 'react-router-dom'
++// import Login from './component/login'
++// import Home from './component/home'
++ class App extends React.Component {
++  render() {
++    console.log(this.props);
++    return (
++      <div>
++        App{this.props.num}
++        <button onClick={this.props.setNumFn}>add</button>
++        <button onClick={this.props.lowFn}>low</button>
++        {/* <Switch> 
++          <Route path='/login' component={Login}/>
++          <Route path='/' render={()=>{
++            if(this.props.isLogin){
++              return (
++                <Switch>
++                   <Route path='/home' component={Home}/>
++                   <Redirect to='/home'/>
++                </Switch>     
++
++              )
++            }else{
++              return <Redirect to='/login'/>
++            }
++          }}/>
++
++        </Switch> */}
++
++      </div>
++    )
++  }
+ }
+ 
+-export default App;
++export default connect(
++  state=>{
++    return {
++      num:state
++      // 'isLogin':state
++    }
++  },
++  {
++    setNumFn(){
++      return {type:'add'}
++    },
++    lowFn(){
++      return {type:'low'}
++    }
++  }
++  //null
++)(App);
+\ No newline at end of file
