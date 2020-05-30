@@ -3,7 +3,7 @@ import loggger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension'
-
+import userList from './userList'
 // 下面的这种函数的写法统称 reducer
 // 登录状态
 let isloginStatus = localStorage.getItem('islogin');
@@ -37,6 +37,7 @@ function listData(state = listDataDefault, action) {
       });
       localStorage.setItem('listData', JSON.stringify(delArr));
       return delArr;
+      
     case 'list_success':
       // 本地存储 只能存储  字符串， 不能存储数组、对象等内容
       localStorage.setItem('listData', JSON.stringify(action.pyload));
@@ -51,7 +52,6 @@ function listData(state = listDataDefault, action) {
 function carData(state = [], action) {
   switch (action.type) {
     case 'car_add':
-
       let addItem = action.pyload;
       let addCar = [...state];
 
@@ -80,7 +80,8 @@ function carData(state = [], action) {
 const reducers = combineReducers({
   isLogin,
   listData,
-  carData
+  carData,
+  userList
 });
 
 
