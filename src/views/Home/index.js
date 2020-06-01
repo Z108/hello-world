@@ -1,72 +1,88 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import http from '../../utils/http'
-import axios from 'axios';
-import {listSuccess,listDel,carAdd } from '../../action/index'
+import { Table, Tag, Space } from 'antd';
+
+const { Column, ColumnGroup } = Table;
+
 class index extends Component {
-    componentDidMount() {
-        const { listData } = this.props;
-        if (listData.length <= 0) {
-            http.get('./data.json').then(res => {
-                console.log(res.datas);
-                this.props.listSuccess( res.datas );
-            });
-        }
-    }
-
     state = {
-        search: ''
+        columns: [
+            {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+                render: text => <a>{text}</a>,
+            },
+            {
+                title: 'Age',
+                dataIndex: 'age',
+                key: 'age',
+            },
+            {
+                title: 'Address',
+                dataIndex: 'address',
+                key: 'address',
+            },
+            {
+                title: 'Tags',
+                key: 'tags',
+                dataIndex: 'tags',
+                render: tags => (
+                    <>
+                        {tags.map(tag => {
+                            let color = tag.length > 5 ? 'geekblue' : 'green';
+                            if (tag === 'loser') {
+                                color = 'volcano';
+                            }
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag.toUpperCase()}
+                                </Tag>
+                            );
+                        })}
+                    </>
+                ),
+            },
+            {
+                title: 'Action',
+                key: 'action',
+                render: (text, record) => (
+                    <Space size="middle">
+                        <a>Update</a>
+                        <a>Delete</a>
+                    </Space>
+                )
+            }
+        ],
+        data : [
+            {
+              key: '1',
+              name: 'John Brown',
+              age: 32,
+              address: 'New York No. 1 Lake Park',
+              tags: ['nice', 'developer'],
+            },
+            {
+              key: '2',
+              name: 'Jim Green',
+              age: 42,
+              address: 'London No. 1 Lake Park',
+              tags: ['loser'],
+            },
+            {
+              key: '3',
+              name: 'Joe Black',
+              age: 32,
+              address: 'Sidney No. 1 Lake Park',
+              tags: ['cool', 'teacher'],
+            }
+          ]
     }
-    setSearch = (e) => {
-        this.setState({
-            search: e.target.value
-        });
-    }
-
-    filterFn() {
-        let res = [];
-        const { listData } = this.props;
-        const { search } = this.state;
-        res = listData.filter(v => {
-            return v.tit.includes(search);
-        })
-        return res;
-    }
-
     render() {
-        const { listDel, carAdd } = this.props;
-        const { search } = this.state;
-
-        const filterListtData = this.filterFn()
-
+        let {data,columns}=this.state
         return (
-            <div>
-                <input type="text" value={search} onChange={this.setSearch} />
-                <button >按钮</button>
-                home
-                {
-                    filterListtData.map(v => {
-                        return (
-                            <div key={v.id}>
-                                {v.tit} - {v.price}
-                                <button onClick={ ()=>listDel(v.id) }>删除</button>
-                                <button onClick={ ()=>carAdd(v) }>加入购物车</button>
-                            </div>
-                        )
-                    })    
-                }
-            </div>
+            <Table columns={columns} dataSource={data} />
         )
     }
 }
 
-export default connect(
-    (state) => {
-        return { listData: state.listData }
-    },
-    {
-        listSuccess,
-        listDel,
-        carAdd
-    }
-)(index);
+export default index
