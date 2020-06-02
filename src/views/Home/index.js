@@ -1,16 +1,25 @@
 import React, { Component } from 'react'
-import { Table, Tag, Space } from 'antd';
+import { Table, Modal, Space, Checkbox } from 'antd';
+import HomeTableModule from './model'
 
-const { Column, ColumnGroup } = Table;
 
-class index extends Component {
+export default class index extends Component {
     state = {
+        visible:false,
+        defaultData:{},
         columns: [
+            {
+                title: 'isok',
+                dataIndex: 'isok',
+                key: 'isok',
+                render: text =>{
+                    return <Checkbox defaultData={text}/>
+                }
+            },
             {
                 title: 'Name',
                 dataIndex: 'name',
-                key: 'name',
-                render: text => <a>{text}</a>,
+                key: 'name'
             },
             {
                 title: 'Age',
@@ -23,66 +32,80 @@ class index extends Component {
                 key: 'address',
             },
             {
-                title: 'Tags',
-                key: 'tags',
-                dataIndex: 'tags',
-                render: tags => (
-                    <>
-                        {tags.map(tag => {
-                            let color = tag.length > 5 ? 'geekblue' : 'green';
-                            if (tag === 'loser') {
-                                color = 'volcano';
-                            }
-                            return (
-                                <Tag color={color} key={tag}>
-                                    {tag.toUpperCase()}
-                                </Tag>
-                            );
-                        })}
-                    </>
-                ),
-            },
-            {
                 title: 'Action',
                 key: 'action',
-                render: (text, record) => (
-                    <Space size="middle">
-                        <a>Update</a>
-                        <a>Delete</a>
-                    </Space>
+                dataIndex:'id',
+                render: (text, context,index) => (
+                    <>
+                        <a onClick={()=>this.updateBtn(context)}>Update</a>
+                        <a onClick={()=>this.delFn(text)}>Delete</a>
+                    </>
                 )
             }
         ],
         data : [
             {
-              key: '1',
+              id: '1',
               name: 'John Brown',
               age: 32,
               address: 'New York No. 1 Lake Park',
               tags: ['nice', 'developer'],
+              isok:true
             },
             {
-              key: '2',
+              id: '2',
               name: 'Jim Green',
               age: 42,
               address: 'London No. 1 Lake Park',
               tags: ['loser'],
+              isok:false
             },
             {
-              key: '3',
+              id: '3',
               name: 'Joe Black',
               age: 32,
               address: 'Sidney No. 1 Lake Park',
               tags: ['cool', 'teacher'],
+              isok:false
             }
           ]
     }
+    delFn=(id)=>{
+        alert(id)
+    }
+    updateBtn=(context)=>{
+        console.log(context);
+        this.setState({
+            defaultData:{...context}
+        })
+        this.setVisible(true)
+    }
+    setVisible=(status)=>{
+        this.setState({
+            visible:status
+        })
+    }
+    onCreate=(value)=>{
+        console.log(value);
+        this.setVisible(false)
+    }
     render() {
-        let {data,columns}=this.state
+        let {data,columns,visible,defaultData}=this.state
         return (
-            <Table columns={columns} dataSource={data} />
+            <>
+            <Table rowKey='id' columns={columns} dataSource={data} />
+
+            <HomeTableModule
+            visible={visible}
+            onCreate={this.onCreate}
+            onCancel={()=>{
+                this.setVisible(false)
+            }}
+            defaultData={defaultData}
+
+            
+            />
+            </>
         )
     }
 }
-
-export default index

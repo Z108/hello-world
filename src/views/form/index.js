@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Select ,Checkbox, Space} from 'antd';
-const { Option } = Select;
+import { Form, Input, Button ,Checkbox} from 'antd';
+
 
 export default class index extends Component {
     state = {
